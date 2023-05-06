@@ -1,8 +1,80 @@
-local builtin = require('telescope.builtin')
+local builtin = require("telescope.builtin")
 
-vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
-vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-vim.keymap.set('n', '<leader>fg', function()
+vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
+vim.keymap.set("n", "<C-p>", builtin.git_files, {})
+vim.keymap.set("n", "<leader>fg", function()
 	builtin.grep_string({ search = vim.fn.input("Grep: ") })
 end)
 
+vim.keymap.set("n", "<leader>cf", builtin.current_buffer_fuzzy_find, {})
+
+vim.keymap.set("n", "gi", function()
+	builtin.lsp_implementations()
+end)
+
+vim.keymap.set("n", "<leader>lr", function()
+	builtin.lsp_references()
+end)
+
+vim.keymap.set("n", "<leader>lds", function()
+	builtin.lsp_document_symbols()
+end)
+
+local options = {
+	defaults = {
+		vimgrep_arguments = {
+			"rg",
+			"-L",
+			"--color=never",
+			"--no-heading",
+			"--with-filename",
+			"--line-number",
+			"--column",
+			"--smart-case",
+		},
+		prompt_prefix = "   ",
+		selection_caret = "  ",
+		entry_prefix = "  ",
+		initial_mode = "insert",
+		selection_strategy = "reset",
+		sorting_strategy = "descending",
+		layout_strategy = "horizontal",
+		layout_config = {
+			horizontal = {
+				prompt_position = "bottom",
+				preview_width = 0.55,
+				results_width = 0.8,
+			},
+			vertical = { mirror = false },
+			width = 0.87,
+			height = 0.80,
+			preview_cutoff = 120,
+		},
+		file_sorter = require("telescope.sorters").get_fuzzy_file,
+		file_ignore_patterns = { "node_modules" },
+		generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+		path_display = { "truncate" },
+		winblend = 0,
+		border = {},
+		borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+		color_devicons = true,
+		set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
+		file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+		grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+		qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+		-- Developer configurations: Not meant for general override
+		buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
+		mappings = {
+			n = { ["q"] = require("telescope.actions").close },
+		},
+	},
+
+	extensions_list = {},
+}
+
+local telescope = require("telescope")
+telescope.setup(options)
+
+for _, ext in ipairs(options.extensions_list) do
+	telescope.load_extension(ext)
+end
