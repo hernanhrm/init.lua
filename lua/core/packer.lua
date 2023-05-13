@@ -86,6 +86,9 @@ return require("packer").startup(function(use)
 		requires = "nvim-tree/nvim-web-devicons",
 	})
 	use("marko-cerovac/material.nvim")
+	use("folke/tokyonight.nvim")
+	use("shaunsingh/moonlight.nvim")
+	use("NvChad/nvim-colorizer.lua")
 
 	-- Automatically set up your configuration after cloning packer.nvim
 	-- Put this at the end after all plugins

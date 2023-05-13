@@ -23,6 +23,7 @@ lsp.ensure_installed({
     "lua_ls",
     "gopls",
     "pyright",
+    "svelte",
 })
 
 -- Global mappings.
